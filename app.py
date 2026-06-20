@@ -151,10 +151,17 @@ def download_video():
         'extract_flat': False,
     }
 
-    # Auto-load cookies.txt if it exists in the app directory
-    cookies_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'cookies.txt')
-    if os.path.exists(cookies_path):
-        ydl_opts['cookiefile'] = cookies_path
+    # Auto-load cookies.txt if it exists in the app directory, or write it from env var if present
+    cookies_content = os.environ.get('COOKIES_CONTENT')
+    if cookies_content:
+        temp_cookies = os.path.join(tempfile.gettempdir(), 'cookies.txt')
+        with open(temp_cookies, 'w', encoding='utf-8') as f:
+            f.write(cookies_content)
+        ydl_opts['cookiefile'] = temp_cookies
+    else:
+        cookies_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'cookies.txt')
+        if os.path.exists(cookies_path):
+            ydl_opts['cookiefile'] = cookies_path
 
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -346,10 +353,17 @@ def download_file_route():
     if os.path.exists('/opt/homebrew/bin/ffmpeg'):
         ydl_opts['ffmpeg_location'] = '/opt/homebrew/bin/ffmpeg'
 
-    # Auto-load cookies.txt if it exists in the app directory
-    cookies_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'cookies.txt')
-    if os.path.exists(cookies_path):
-        ydl_opts['cookiefile'] = cookies_path
+    # Auto-load cookies.txt if it exists in the app directory, or write it from env var if present
+    cookies_content = os.environ.get('COOKIES_CONTENT')
+    if cookies_content:
+        temp_cookies = os.path.join(tempfile.gettempdir(), 'cookies.txt')
+        with open(temp_cookies, 'w', encoding='utf-8') as f:
+            f.write(cookies_content)
+        ydl_opts['cookiefile'] = temp_cookies
+    else:
+        cookies_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'cookies.txt')
+        if os.path.exists(cookies_path):
+            ydl_opts['cookiefile'] = cookies_path
     
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
