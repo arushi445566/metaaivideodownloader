@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - MetaVidSaver</title>
+    <meta name="description" content="Reach out to the MetaVidSaver support team for any queries, technical support, feedback, or legal inquiries.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-brand">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="brand-icon">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                </svg>
+                <span class="brand-name">MetaVidSaver</span>
+            </a>
+            <div class="nav-links">
+                <a href="/" class="nav-link">Meta AI</a>
+                <a href="/instagram-downloader" class="nav-link">Instagram</a>
+                <a href="/facebook-downloader" class="nav-link">Facebook</a>
+                <a href="/contact" class="nav-link active">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        
+        <!-- Contact Form Section -->
+        <section class="legal-section animate-fadeIn">
+            <div class="contact-card">
+                <h1 class="legal-title text-center">Contact Us</h1>
+                <p class="contact-subtitle text-center">Have a question or feedback? Drop us a message below and our support team will respond within 24 hours.</p>
+
+                <!-- Ad placeholder -->
+                <div class="ad-placeholder-inline">
+                    <span class="ad-tag">ADVERTISEMENT</span>
+                    <!-- Google AdSense tag goes here -->
+                    <div class="ad-box-mock">AdSense In-Article Ad Slot</div>
+                </div>
+
+                <form id="contactForm" class="contact-form">
+                    <div class="form-group-row">
+                        <div class="form-control">
+                            <label for="contactName">Your Name</label>
+                            <input type="text" id="contactName" placeholder="John Doe" required autocomplete="name">
+                        </div>
+                        <div class="form-control">
+                            <label for="contactEmail">Your Email</label>
+                            <input type="email" id="contactEmail" placeholder="john@example.com" required autocomplete="email">
+                        </div>
+                    </div>
+                    
+                    <div class="form-control">
+                        <label for="contactSubject">Subject</label>
+                        <input type="text" id="contactSubject" placeholder="Inquiry / DMCA Request / Feedback" required>
+                    </div>
+                    
+                    <div class="form-control">
+                        <label for="contactMessage">Message</label>
+                        <textarea id="contactMessage" rows="6" placeholder="Write your message here..." required></textarea>
+                    </div>
+
+                    <button type="submit" id="contactSubmitBtn" class="submit-btn gradient-shift">
+                        <span>Send Message</span>
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                        </svg>
+                    </button>
+                </form>
+
+                <!-- Status Container -->
+                <div id="contactStatus" class="status-container hidden">
+                    <p id="contactStatusMessage" class="status-message"></p>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="/privacy-policy">Privacy Policy</a>
+            <a href="/terms-of-service">Terms of Service</a>
+            <a href="/disclaimer">Disclaimer</a>
+            <a href="/contact">Contact Us</a>
+        </div>
+        <p>&copy; 2024 MetaVidSaver. All rights reserved.</p>
+        <p class="disclaimer">This tool is for personal use only. Please respect copyright laws.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../static/script.js"></script>
+</body>
+</html>

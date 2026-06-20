@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Reels & Video Downloader – HD MP4 Saver</title>
+    <meta name="description" content="Paste an Instagram Reel or video link and save it in high quality (up to 1080p) as a clean MP4 with audio. Free, fast, and watermark-free.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-brand">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="brand-icon">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                </svg>
+                <span class="brand-name">MetaVidSaver</span>
+            </a>
+            <div class="nav-links">
+                <a href="/" class="nav-link">Meta AI</a>
+                <a href="/instagram-downloader" class="nav-link active">Instagram</a>
+                <a href="/facebook-downloader" class="nav-link">Facebook</a>
+                <a href="/contact" class="nav-link">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        
+        <!-- Header Ad Slot (AdSense Placeholder) -->
+        <div class="ad-placeholder-header animate-fadeIn">
+            <span class="ad-tag">ADVERTISEMENT</span>
+            <div class="ad-box-mock">Google AdSense - Responsive Header Banner</div>
+        </div>
+        
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1 class="hero-title">Instagram Reels Downloader <br> <span class="highlight">High Quality MP4</span></h1>
+                <p class="hero-subtitle">Fast, free, and in HD quality. Paste your Reel or video link below to get started.</p>
+                
+                <!-- Local File Warning Banner (shown if opened via file://) -->
+                <div id="fileProtocolWarning" class="warning-banner hidden">
+                    <div class="warning-content">
+                        <svg class="warning-icon" width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                        </svg>
+                        <span>
+                            <strong>Running from local file:</strong> The downloader backend requires a running server to extract videos. Please go to 
+                            <a href="http://localhost:5002" class="warning-link">http://localhost:5002</a> to use the downloader.
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Downloader Form -->
+                <div class="downloader-card pulse-glow">
+                    <form id="downloadForm" class="download-form">
+                        <div class="input-group">
+                            <svg class="input-icon" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+                            </svg>
+                            <input type="url" id="videoUrl" placeholder="Paste Instagram Reel or Video link here..." required autocomplete="off">
+                            <button type="button" id="pasteBtn" class="paste-btn">Paste</button>
+                        </div>
+                        <button type="submit" id="submitBtn" class="submit-btn gradient-shift">
+                            <span>Download Video</span>
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                            </svg>
+                        </button>
+                    </form>
+
+                    <!-- Status Display -->
+                    <div id="statusContainer" class="status-container hidden">
+                        <div class="loader-circle animate-spin hidden" id="loaderIcon"></div>
+                        <p id="statusMessage" class="status-message">Processing your video...</p>
+                        
+                        <div class="progress-wrapper hidden" id="progressWrapper">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+
+                        <!-- Video Preview -->
+                        <div id="previewWrapper" class="preview-wrapper hidden animate-slideDown">
+                            <video id="videoPreview" class="video-preview" controls playsinline>
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+
+                        <!-- Quality Options Selection -->
+                        <div id="qualityOptionsContainer" class="quality-options-container hidden animate-slideDown">
+                            <label class="options-label">Select Download Option:</label>
+                            <div id="formatsList" class="formats-list">
+                                <!-- Dynamic buttons will be injected here -->
+                            </div>
+                        </div>
+
+                        <!-- Download Result actions -->
+                        <div id="resultActions" class="result-actions hidden animate-slideDown">
+                            <button id="downloadFileBtn" class="download-file-btn hidden">
+                                Download MP4
+                            </button>
+                            <button id="downloadAnotherBtn" class="secondary-btn">
+                                Download Another Video
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="features-section">
+            <h2 class="section-title">Why Use MetaVidSaver?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h3>Lightning Fast</h3>
+                    <p>Our optimized servers fetch and prepare your video in seconds.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">✨</div>
+                    <h3>No Watermark</h3>
+                    <p>Download your creations completely clean without any branding.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Any Device</h3>
+                    <p>Works seamlessly on mobile, tablet, and desktop browsers.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Educational Guides Section (Google AdSense compliance - High Value Editorial Content) -->
+        <section class="guide-section">
+            <div class="guide-container">
+                <h2 class="guide-section-title">The Complete Guide to Instagram Reels & Video Archival</h2>
+                
+                <div class="guide-article">
+                    <h3>How to Download Instagram Reels: A Step-by-Step Guide</h3>
+                    <p>Saving your favorite Instagram Reels and video creations is simple and straightforward. Open the Instagram application or website, navigate to the specific Reel or post you wish to back up, and copy its link by tapping the "Share" icon followed by "Copy Link". Paste the URL into our input container above and click "Download Video". Our advanced extractor parses the video stream, retrieves the available formats (including high-resolution 1080p options), and prepares a live preview player. You can then download the compiled MP4 directly to your device storage.</p>
+                </div>
+
+                <!-- Inline Ad Slot (AdSense Placeholder) -->
+                <div class="ad-placeholder-inline">
+                    <span class="ad-tag">ADVERTISEMENT</span>
+                    <div class="ad-box-mock">Google AdSense - In-Article Native Banner</div>
+                </div>
+
+                <div class="guide-article">
+                    <h3>High-Quality Server-Side Video & Audio Compiling</h3>
+                    <p>To deliver maximum HD resolution (1080p and higher), our platform uses server-side stream merging. Platforms like Instagram separate higher-definition video tracks from their corresponding audio tracks to optimize adaptive streaming in their apps. When you choose a quality option labeled with "[HQ Compiling]", our backend automatically downloads the best video-only track and the best audio-only track, compiles them into a single high-definition MP4 file using the server's local FFmpeg utility, and streams the finished file directly to your browser connection. This ensures you save the video without losing audio quality.</p>
+                </div>
+
+                <div class="guide-article">
+                    <h3>Why Back Up Your Instagram Content Locally?</h3>
+                    <p>Active social media feeds are dynamic and temporary. Content creators frequently archive posts, change privacy settings, or delete accounts, making once-accessible Reels unavailable. In addition, platform algorithms can sometimes flag or mute audio tracks in specific regions due to shifting license agreements. Downloading local backups of your own creative portfolios, educational tutorials, and favorite inspiration reels keeps them permanently accessible for offline viewing and editing workflows.</p>
+                </div>
+
+                <div class="guide-article">
+                    <h3>Copyright Compliance and Legal Downloading Terms</h3>
+                    <p>MetaVidSaver operates strictly in compliance with fair use and intellectual property regulations. This download tool is intended solely for personal, informational, and archival backup purposes. Users must not download, distribute, or exploit copyrighted videos or commercial media belonging to other creators without their express permission. Please consult Instagram's community guidelines and local copyright laws to ensure your downloading activities remain fully compliant.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer Ad Slot (AdSense Placeholder) -->
+        <div class="ad-placeholder-footer">
+            <span class="ad-tag">ADVERTISEMENT</span>
+            <div class="ad-box-mock">Google AdSense - Footer Billboard Ad Unit</div>
+        </div>
+        
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="/privacy-policy">Privacy Policy</a>
+            <a href="/terms-of-service">Terms of Service</a>
+            <a href="/disclaimer">Disclaimer</a>
+            <a href="/contact">Contact Us</a>
+        </div>
+        <p>&copy; 2024 MetaVidSaver. All rights reserved.</p>
+        <p class="disclaimer">This tool is for personal use only. Please respect copyright laws.</p>
+    </footer>
+
+    <!-- GDPR/CCPA Cookie Consent Banner -->
+    <div id="cookieConsent" class="cookie-consent hidden">
+        <div class="cookie-content">
+            <p>We use cookies to personalize content, analyze traffic, and serve tailored advertisements through Google AdSense. By clicking "Accept All", you agree to our use of cookies in accordance with our <a href="/privacy-policy" class="cookie-link">Privacy Policy</a>.</p>
+            <div class="cookie-buttons">
+                <button id="acceptCookiesBtn" class="cookie-btn-primary">Accept All</button>
+                <button id="declineCookiesBtn" class="cookie-btn-secondary">Decline</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../static/script.js"></script>
+    
+    <!-- Inline script to detect file:// protocol and show the warning -->
+    <script>
+        if (window.location.protocol === 'file:') {
+            document.getElementById('fileProtocolWarning').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

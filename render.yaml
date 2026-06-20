@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: meta-ai-video-downloader-backend
+    env: docker
+    plan: free
+    region: oregon
+    dockerFilePath: Dockerfile
