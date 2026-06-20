@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Meta AI Video Downloader FAQ – Questions Answered | {{ site_name }}{% endblock %}
+{% block description %}Frequently asked questions about downloading Meta AI videos, removing watermarks, supported platforms, quality, privacy, and whether {{ site_name }} is free and safe.{% endblock %}
+{% block robots %}index, follow{% endblock %}
+
+{% block structured_data %}
+{{ super() }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"Is the Meta AI video downloader free?","acceptedAnswer":{"@type":"Answer","text":"Yes. {{ site_name }} is completely free with no limits on how many videos you can download, and no account is required."}},
+    {"@type":"Question","name":"How do I download a Meta AI video?","acceptedAnswer":{"@type":"Answer","text":"Copy the share link of your Meta AI video, paste it into the box on our home page, press Download Video, then choose a quality and save the MP4."}},
+    {"@type":"Question","name":"Can I remove the watermark from a Meta AI video?","acceptedAnswer":{"@type":"Answer","text":"Yes. Our watermark remover retrieves the cleanest available source copy of your own Meta AI video so you can save it without the on-screen watermark."}},
+    {"@type":"Question","name":"What video quality can I download?","acceptedAnswer":{"@type":"Answer","text":"We provide the highest quality the platform makes available, typically up to 1080p HD, with the original audio track preserved."}},
+    {"@type":"Question","name":"Is it safe and private?","acceptedAnswer":{"@type":"Answer","text":"Yes. We never ask for your password and we do not store your videos. Each request is processed in real time and discarded immediately."}},
+    {"@type":"Question","name":"Do I need to install any software?","acceptedAnswer":{"@type":"Answer","text":"No. {{ site_name }} runs entirely in your browser on any device — no app, extension, or download manager needed."}},
+    {"@type":"Question","name":"Which platforms are supported?","acceptedAnswer":{"@type":"Answer","text":"Meta AI videos, plus Instagram Reels and videos and Facebook Reels and videos."}}
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+        <section class="legal-section animate-fadeIn">
+            <div class="legal-card">
+                <h1 class="legal-title">Frequently Asked Questions</h1>
+                <p class="legal-updated">Everything you need to know about {{ site_name }}</p>
+
+                <details class="faq-item" open>
+                    <summary>Is the Meta AI video downloader free?</summary>
+                    <p>Yes. {{ site_name }} is 100% free with no limits on how many videos you can download, and no account or subscription is required. We may show advertisements to keep the service free, but you will never be charged to download a video.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>How do I download a Meta AI video?</summary>
+                    <p>Open your video in Meta AI and tap Share → Copy Link. Paste that link into the box on our <a href="/" class="legal-link">home page</a> and press "Download Video". Preview the result, choose a quality option, and the MP4 saves to your device. See our <a href="/how-it-works" class="legal-link">how it works</a> page for a full walkthrough.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Can I remove the watermark from a Meta AI video?</summary>
+                    <p>Yes. Our <a href="/meta-ai-watermark-remover" class="legal-link">Meta AI watermark remover</a> retrieves the cleanest available source copy of your own video so you can save it without the on-screen watermark. Please only remove watermarks from content you created or have permission to use.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>What video quality can I download?</summary>
+                    <p>We always offer the highest quality the platform makes available — typically up to 1080p Full HD — and we preserve the original audio. For high-resolution clips, our server merges the best video and audio streams into a single MP4 so nothing is lost.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Is it safe and private to use?</summary>
+                    <p>Yes. We never ask for your Meta, Instagram, or Facebook password, and we do not store the videos you download. Every request is processed in real time and discarded immediately afterward. Read more in our <a href="/privacy-policy" class="legal-link">Privacy Policy</a>.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Do I need to install any software or app?</summary>
+                    <p>No. {{ site_name }} runs entirely in your web browser on any device — iPhone, Android, Mac, or Windows. There is no app to install, no browser extension, and no download manager required.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Why is my video not downloading?</summary>
+                    <p>The most common reasons are that the link is private, has expired, or was copied incompletely. Make sure the video is publicly shareable and that you copied the full link. If the problem continues, please reach out via our <a href="/contact" class="legal-link">contact page</a>.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Which platforms are supported?</summary>
+                    <p>Meta AI videos, Instagram Reels and videos, and Facebook Reels and videos. We continue to expand support over time.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Is it legal to download AI videos?</summary>
+                    <p>Downloading content you created yourself for personal use is generally fine. Downloading other people's content may be restricted depending on the platform's terms and your local copyright laws. We cover this in detail in our <a href="/blog/can-you-legally-download-ai-videos" class="legal-link">copyright guide</a>.</p>
+                </details>
+            </div>
+        </section>
+{% endblock %}

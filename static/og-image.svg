@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0f172a"/>
+      <stop offset="1" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="txt" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#60a5fa"/>
+      <stop offset="1" stop-color="#a78bfa"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <g transform="translate(100,250)">
+    <rect x="0" y="0" width="120" height="120" rx="26" fill="#0b1220" stroke="#334155" stroke-width="2"/>
+    <path d="M30 66v8a10 10 0 0 0 10 10h40a10 10 0 0 0 10-10v-8" fill="none" stroke="url(#txt)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M60 30v44m0 0l-16-16m16 16l16-16" fill="none" stroke="url(#txt)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="100" y="190" font-family="Inter, Arial, sans-serif" font-size="40" fill="#94a3b8" font-weight="600">MetaVidSaver</text>
+  <text x="260" y="320" font-family="Inter, Arial, sans-serif" font-size="72" fill="#f8fafc" font-weight="800">Meta AI Video Downloader</text>
+  <text x="260" y="400" font-family="Inter, Arial, sans-serif" font-size="44" fill="url(#txt)" font-weight="700">Download &amp; Remove Watermarks — Free HD MP4</text>
+</svg>

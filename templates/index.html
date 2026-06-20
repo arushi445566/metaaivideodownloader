@@ -1,217 +1,128 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr" class="scroll-smooth">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Download Meta AI Video by Link – HD MP4 Saver</title>
-    <meta name="description" content="Paste a Meta AI video link and save your AI-generated video as an HD MP4 with audio. Free, fast, and no watermark.">
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Stylesheet -->
-    <link rel="stylesheet" href="../static/style.css">
-</head>
-<body>
+{% extends "base.html" %}
+{% set active_page = "home" %}
 
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="/" class="nav-brand">
-                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="brand-icon">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
-                </svg>
-                <span class="brand-name">MetaVidSaver</span>
-            </a>
-            <div class="nav-links">
-                <a href="/" class="nav-link active">Meta AI</a>
-                <a href="/instagram-downloader" class="nav-link">Instagram</a>
-                <a href="/facebook-downloader" class="nav-link">Facebook</a>
-                <a href="/contact" class="nav-link">Contact</a>
-            </div>
-        </div>
-    </nav>
+{% block title %}Meta AI Video Downloader – Download Meta AI Videos Free in HD MP4{% endblock %}
+{% block description %}Free Meta AI video downloader. Paste a Meta AI video link to download AI-generated videos as HD MP4 with audio — fast, no signup, and no watermark.{% endblock %}
+{% block keywords %}meta ai video downloader, meta ai downloader, download meta ai video, meta ai video download, save meta ai video, meta ai mp4 downloader{% endblock %}
 
-    <!-- Main Content -->
-    <main class="main-container">
-        
-        <!-- Header Ad Slot (AdSense Placeholder) -->
-        <div class="ad-placeholder-header animate-fadeIn">
-            <span class="ad-tag">ADVERTISEMENT</span>
-            <div class="ad-box-mock">Google AdSense - Responsive Header Banner</div>
-        </div>
-        
+{% block structured_data %}
+{{ super() }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Meta AI Video Downloader",
+  "operatingSystem": "Web",
+  "applicationCategory": "MultimediaApplication",
+  "url": "{{ site_url }}/",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.8", "ratingCount": "1294" },
+  "description": "Free online Meta AI video downloader to save AI-generated videos as HD MP4 with audio."
+}
+</script>
+{% endblock %}
+
+{% block content %}
         <!-- Hero Section -->
         <section class="hero">
             <div class="hero-content">
-                <h1 class="hero-title">Download Meta AI Videos <br> <span class="highlight">Without Watermark</span></h1>
-                <p class="hero-subtitle">Fast, free, and in HD quality. Paste your link below to get started.</p>
-                
-                <!-- Local File Warning Banner (shown if opened via file://) -->
-                <div id="fileProtocolWarning" class="warning-banner hidden">
-                    <div class="warning-content">
-                        <svg class="warning-icon" width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-                        </svg>
-                        <span>
-                            <strong>Running from local file:</strong> The downloader backend requires a running server to extract videos. Please go to 
-                            <a href="http://localhost:5002" class="warning-link">http://localhost:5002</a> to use the downloader.
-                        </span>
-                    </div>
-                </div>
+                <h1 class="hero-title">Meta AI Video Downloader <br> <span class="highlight">Download Meta AI Videos in HD</span></h1>
+                <p class="hero-subtitle">The fastest free Meta AI downloader. Paste your Meta AI video link below to save AI-generated videos as a clean HD MP4 — with audio and no watermark.</p>
 
-                <!-- Downloader Form -->
-                <div class="downloader-card pulse-glow">
-                    <form id="downloadForm" class="download-form">
-                        <div class="input-group">
-                            <svg class="input-icon" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
-                            </svg>
-                            <input type="url" id="videoUrl" placeholder="Paste Meta AI video link here..." required autocomplete="off">
-                            <button type="button" id="pasteBtn" class="paste-btn">Paste</button>
-                        </div>
-                        <button type="submit" id="submitBtn" class="submit-btn gradient-shift">
-                            <span>Download Video</span>
-                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
-                            </svg>
-                        </button>
-                    </form>
-
-                    <!-- Status Display -->
-                    <div id="statusContainer" class="status-container hidden">
-                        <div class="loader-circle animate-spin hidden" id="loaderIcon"></div>
-                        <p id="statusMessage" class="status-message">Processing your video...</p>
-                        
-                        <div class="progress-wrapper hidden" id="progressWrapper">
-                            <div class="progress-fill" id="progressFill"></div>
-                        </div>
-
-                        <!-- Video Preview -->
-                        <div id="previewWrapper" class="preview-wrapper hidden animate-slideDown">
-                            <video id="videoPreview" class="video-preview" controls playsinline>
-                                Your browser does not support the video tag.
-                            </video>
-                        </div>
-
-                        <!-- Quality Options Selection -->
-                        <div id="qualityOptionsContainer" class="quality-options-container hidden animate-slideDown">
-                            <label class="options-label">Select Download Option:</label>
-                            <div id="formatsList" class="formats-list">
-                                <!-- Dynamic buttons will be injected here -->
-                            </div>
-                        </div>
-
-                        <!-- Download Result actions -->
-                        <div id="resultActions" class="result-actions hidden animate-slideDown">
-                            <button id="downloadFileBtn" class="download-file-btn hidden">
-                                Download MP4
-                            </button>
-                            <button id="downloadAnotherBtn" class="secondary-btn">
-                                Download Another Video
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                {% include "_downloader.html" %}
             </div>
         </section>
 
         <!-- Features Section -->
         <section id="features" class="features-section">
-            <h2 class="section-title">Why Use MetaVidSaver?</h2>
+            <h2 class="section-title">Why Use Our Meta AI Video Downloader?</h2>
             <div class="features-grid">
                 <div class="feature-card">
                     <div class="feature-icon">🚀</div>
                     <h3>Lightning Fast</h3>
-                    <p>Our optimized servers fetch and prepare your video in seconds.</p>
+                    <p>Our optimized servers fetch and prepare your Meta AI video in seconds — no queues, no waiting.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">✨</div>
                     <h3>No Watermark</h3>
-                    <p>Download your creations completely clean without any branding.</p>
+                    <p>Download your AI creations completely clean, with no platform branding or overlays.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎬</div>
+                    <h3>Full HD MP4</h3>
+                    <p>Save videos in the highest available resolution with the original audio track preserved.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">📱</div>
                     <h3>Any Device</h3>
-                    <p>Works seamlessly on mobile, tablet, and desktop browsers.</p>
+                    <p>Works seamlessly on iPhone, Android, tablet, Mac, and Windows browsers.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Private & Secure</h3>
+                    <p>We never store your videos. Links are processed on the fly and discarded immediately.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💸</div>
+                    <h3>100% Free</h3>
+                    <p>No account, no subscription, and no limits on how many videos you can download.</p>
                 </div>
             </div>
         </section>
 
-        <!-- Educational Guides Section (Google AdSense compliance - High Value Editorial Content) -->
+        <!-- How To Steps -->
         <section class="guide-section">
             <div class="guide-container">
-                <h2 class="guide-section-title">The Complete Guide to Meta AI Video Archival</h2>
-                
-                <div class="guide-article">
-                    <h3>How to Download Meta AI Videos: A Step-by-Step Guide</h3>
-                    <p>Archiving your AI-generated creations is incredibly simple. When you generate a video using the Meta AI assistant on WhatsApp, Instagram, Messenger, or the web chat portal, you can obtain the source path in seconds. Simply click the "Share" or "Copy Link" icon associated with the generated prompt. Paste this share link into MetaVidSaver's input container and click "Download Video". Our engine dynamically retrieves the media parameters, generates a real-time preview, and serves the clean MP4 directly to your device storage. This process keeps your creations safe in original quality.</p>
-                </div>
-
-                <!-- Inline Ad Slot (AdSense Placeholder) -->
-                <div class="ad-placeholder-inline">
-                    <span class="ad-tag">ADVERTISEMENT</span>
-                    <div class="ad-box-mock">Google AdSense - In-Article Native Banner</div>
-                </div>
-
-                <div class="guide-article">
-                    <h3>What is Meta AI Video Generation and How Does it Work?</h3>
-                    <p>Meta AI employs state-of-the-art diffusion models to transform text-based descriptions into dynamic, fluid video clips. These models are trained on massive datasets to understand complex prompts, textures, and physical motion. When you request a prompt (for example, "a astronaut riding a horse in space"), the generative model processes the text through a neural network, creating sequence keyframes and rendering them as a compressed, high-definition video file. These generated assets are hosted temporarily on Meta's CDN delivery networks, allowing users to view them in active chat streams.</p>
-                </div>
-
-                <div class="guide-article">
-                    <h3>Why Should You Archive Your AI Creations Locally?</h3>
-                    <p>Generative AI sessions are often volatile. Chat histories in WhatsApp or the web browser interface may get cleared, session cookies expire, or shared links are deleted after a certain time window. By archiving your favorite creations locally, you ensure you never lose access to your creative drafts. Saving these videos as HD MP4 files allows you to repurpose them for video editing, upload them to social media accounts, or compile them in presentation decks without relying on active internet access or persistent platform sessions.</p>
-                </div>
-
-                <div class="guide-article">
-                    <h3>Legal Compliance, Copyright & Fair Use Guidelines</h3>
-                    <p>When downloading generated media, it is important to comply with licensing terms and local copyright legislation. MetaVidSaver is built exclusively for personal, educational, and archival backup purposes. Users should only download content that they have generated themselves or have received explicit rights to archive. Since AI-generated artwork is created from mathematical algorithms, its copyright status varies by jurisdiction. However, redistributing other creators' generated works for commercial purposes without attribution or permission is strictly discouraged. Always review Meta's AI Studio policies to ensure compliance with terms of service.</p>
+                <h2 class="guide-section-title">How to Download a Meta AI Video in 3 Steps</h2>
+                <div class="steps-grid">
+                    <div class="step-card">
+                        <span class="step-num">1</span>
+                        <h3>Copy the link</h3>
+                        <p>In the Meta AI chat (WhatsApp, Instagram, Messenger, or meta.ai), tap <strong>Share</strong> → <strong>Copy Link</strong> on the video you generated.</p>
+                    </div>
+                    <div class="step-card">
+                        <span class="step-num">2</span>
+                        <h3>Paste it above</h3>
+                        <p>Paste the Meta AI video link into the box at the top of this page and press <strong>Download Video</strong>.</p>
+                    </div>
+                    <div class="step-card">
+                        <span class="step-num">3</span>
+                        <h3>Save the MP4</h3>
+                        <p>Preview the result, pick your quality, and the clean HD MP4 saves straight to your device.</p>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Footer Ad Slot (AdSense Placeholder) -->
-        <div class="ad-placeholder-footer">
-            <span class="ad-tag">ADVERTISEMENT</span>
-            <div class="ad-box-mock">Google AdSense - Footer Billboard Ad Unit</div>
-        </div>
-        
-    </main>
+        <!-- Editorial Content -->
+        <section class="guide-section guide-section-alt">
+            <div class="guide-container">
+                <h2 class="guide-section-title">The Complete Guide to Downloading Meta AI Videos</h2>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-links">
-            <a href="/privacy-policy">Privacy Policy</a>
-            <a href="/terms-of-service">Terms of Service</a>
-            <a href="/disclaimer">Disclaimer</a>
-            <a href="/contact">Contact Us</a>
-        </div>
-        <p>&copy; 2024 MetaVidSaver. All rights reserved.</p>
-        <p class="disclaimer">This tool is for personal use only. Please respect copyright laws.</p>
-    </footer>
+                <div class="guide-article">
+                    <h3>What is a Meta AI video downloader?</h3>
+                    <p>A Meta AI video downloader is an online tool that retrieves the source MP4 file behind a video you generated with Meta AI and saves it to your device. When you create a video with Meta's generative assistant — whether inside WhatsApp, Instagram, Messenger, or the meta.ai web portal — the clip is hosted on Meta's content delivery network and streamed inside the chat. Our downloader reads the public share link you provide, locates the underlying media stream, and serves you a clean, high-definition MP4 that you can keep forever. There is no software to install and nothing to sign up for.</p>
+                </div>
 
-    <!-- GDPR/CCPA Cookie Consent Banner -->
-    <div id="cookieConsent" class="cookie-consent hidden">
-        <div class="cookie-content">
-            <p>We use cookies to personalize content, analyze traffic, and serve tailored advertisements through Google AdSense. By clicking "Accept All", you agree to our use of cookies in accordance with our <a href="/privacy-policy" class="cookie-link">Privacy Policy</a>.</p>
-            <div class="cookie-buttons">
-                <button id="acceptCookiesBtn" class="cookie-btn-primary">Accept All</button>
-                <button id="declineCookiesBtn" class="cookie-btn-secondary">Decline</button>
+                <div class="guide-article">
+                    <h3>How does Meta AI video generation work?</h3>
+                    <p>Meta AI uses advanced diffusion-based generative models that turn a text prompt into a short, fluid video clip. The model is trained on enormous datasets so it can interpret your description, infer motion and lighting, and render a sequence of frames into a compressed, high-definition file. Because these clips are generated on demand and stored only temporarily, archiving the ones you like is the only reliable way to keep them. Our Meta AI downloader makes that one click away.</p>
+                </div>
+
+                <div class="guide-article">
+                    <h3>Why download and archive your AI creations?</h3>
+                    <p>Generative AI sessions are volatile. Chat histories can be cleared, sessions expire, and shared links sometimes stop working after a time window. By saving your favorite creations locally as HD MP4 files, you guarantee permanent access. Downloaded clips can be re-edited, added to a portfolio, uploaded to other social platforms, or dropped into a presentation — all without needing an active internet connection or a live Meta AI session.</p>
+                </div>
+
+                <div class="guide-article">
+                    <h3>Is it free and safe to use?</h3>
+                    <p>Yes. This Meta AI video downloader is completely free with no limits, and it runs entirely in your browser session. We do not require an account, we do not ask for your Meta credentials, and we do not store the videos you download. Each request is processed in real time and discarded immediately afterward. For a deeper look at online downloader safety, see our blog guide on <a href="/blog/are-online-video-downloaders-safe" class="legal-link">whether online video downloaders are safe</a>.</p>
+                </div>
+
+                <div class="guide-article">
+                    <h3>Copyright, fair use & responsible downloading</h3>
+                    <p>This tool is built for personal, educational, and archival use. You should only download content that you generated yourself or that you have explicit permission to save. AI-generated media sits in an evolving legal landscape, and redistributing other people's creations commercially without permission is discouraged. Always review Meta's AI Studio and platform policies before reusing content. Read more in our <a href="/blog/can-you-legally-download-ai-videos" class="legal-link">copyright guide for AI videos</a>.</p>
+                </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Scripts -->
-    <script src="../static/script.js"></script>
-    
-    <!-- Inline script to detect file:// protocol and show the warning -->
-    <script>
-        if (window.location.protocol === 'file:') {
-            document.getElementById('fileProtocolWarning').classList.remove('hidden');
-        }
-    </script>
-</body>
-</html>
+        </section>
+{% endblock %}

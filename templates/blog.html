@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% set active_page = "blog" %}
+
+{% block title %}Blog – Meta AI Video Guides, Tips &amp; Tutorials | {{ site_name }}{% endblock %}
+{% block description %}Guides and tutorials on downloading Meta AI videos, removing watermarks, AI video copyright, downloader safety, and comparisons of the best AI video generators.{% endblock %}
+{% block keywords %}meta ai video blog, ai video guides, how to download ai videos, ai video tutorials{% endblock %}
+
+{% block structured_data %}
+{{ super() }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "{{ site_name }} Blog",
+  "url": "{{ site_url }}/blog",
+  "description": "Guides and tutorials on Meta AI videos, watermark removal, copyright, and AI video tools."
+}
+</script>
+{% endblock %}
+
+{% block content %}
+        <section class="blog-hero">
+            <h1 class="legal-title">The {{ site_name }} Blog</h1>
+            <p class="hero-subtitle">In-depth guides on Meta AI videos, watermark removal, copyright, downloader safety, and the fast-moving world of AI video.</p>
+        </section>
+
+        <section class="blog-list-section">
+            <div class="blog-grid">
+                {% for post in posts %}
+                <a href="/blog/{{ post.slug }}" class="blog-card">
+                    <span class="blog-card-category">{{ post.category }}</span>
+                    <h2 class="blog-card-title">{{ post.title | safe }}</h2>
+                    <p class="blog-card-desc">{{ post.description }}</p>
+                    <div class="blog-card-meta">
+                        <span>{{ post.date_display }}</span>
+                        <span>•</span>
+                        <span>{{ post.read_time }}</span>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </section>
+{% endblock %}

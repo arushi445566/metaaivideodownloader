@@ -3,12 +3,53 @@ import tempfile
 import urllib.request
 import urllib.parse
 import re
-from flask import Flask, request, jsonify, render_template, send_file
+from datetime import datetime
+from html import unescape
+from flask import Flask, request, jsonify, render_template, send_file, Response, abort
 from flask_cors import CORS
 import yt_dlp
 
+from blog_posts import POSTS, POST_ORDER
+
 app = Flask(__name__)
 CORS(app)
+
+# Site configuration
+SITE_NAME = os.environ.get('SITE_NAME', 'MetaVidSaver')
+# Set ADSENSE_CLIENT (e.g. "ca-pub-1234567890123456") to enable the Google AdSense loader.
+ADSENSE_CLIENT = os.environ.get('ADSENSE_CLIENT', '')
+
+
+@app.context_processor
+def inject_globals():
+    """Expose SEO-related variables to every template."""
+    return {
+        'site_name': SITE_NAME,
+        'adsense_client': ADSENSE_CLIENT,
+        'current_year': datetime.utcnow().year,
+        'canonical_url': request.base_url,
+        'site_url': request.url_root.rstrip('/'),
+    }
+
+
+def _format_date(iso_date):
+    try:
+        return datetime.strptime(iso_date, '%Y-%m-%d').strftime('%B %d, %Y')
+    except (ValueError, TypeError):
+        return iso_date
+
+
+def _post_summary(slug):
+    post = POSTS[slug]
+    return {
+        'slug': slug,
+        'title': post['title'],
+        'description': post['description'],
+        'category': post['category'],
+        'read_time': post['read_time'],
+        'date': post['date'],
+        'date_display': _format_date(post['date']),
+    }
 
 def get_remote_file_size(url):
     try:
@@ -47,6 +88,52 @@ def extract_meta_share_video(share_url):
     except Exception as e:
         print(f"Meta AI share extraction failed: {e}")
     return None
+
+def extract_meta_share_image(share_url):
+    """Extract a direct image URL (e.g. an AI-generated image) from a Meta AI share page."""
+    try:
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        }
+        req = urllib.request.Request(share_url, headers=headers)
+        with urllib.request.urlopen(req, timeout=8) as response:
+            html = response.read().decode('utf-8')
+
+        html_decoded = html.replace('\\u0026', '&').replace('&amp;', '&')
+
+        # Prefer the Open Graph image when present (Meta renders one for shared media)
+        og_match = re.search(r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+)["\']', html_decoded)
+        if og_match and re.search(r'fbcdn\.net|fbsbx\.com|cdninstagram\.com', og_match.group(1)):
+            return og_match.group(1).rstrip('\\')
+
+        # Fall back to the largest-looking image asset on Meta's CDN
+        pattern = r'(https?://[^\s"\'\\]+?(?:fbcdn\.net|fbsbx\.com|cdninstagram\.com)[^\s"\'\\]+?\.(?:jpg|jpeg|png|webp)[^\s"\'\\]*)'
+        matches = re.findall(pattern, html_decoded)
+        if matches:
+            return matches[0].rstrip('\\')
+    except Exception as e:
+        print(f"Meta AI image extraction failed: {e}")
+    return None
+
+
+def check_direct_image(url):
+    """Return True if the URL points directly at an image file."""
+    try:
+        parsed = urllib.parse.urlparse(url)
+        path = parsed.path.lower()
+        if any(path.endswith(ext) for ext in ['.jpg', '.jpeg', '.png', '.webp', '.gif']):
+            return True
+
+        req = urllib.request.Request(url, method='HEAD')
+        req.add_header('User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36')
+        with urllib.request.urlopen(req, timeout=3) as response:
+            content_type = response.info().get_content_type()
+            if content_type and content_type.startswith('image/'):
+                return True
+    except Exception as e:
+        print(f"Image HEAD check failed: {e}")
+    return False
+
 
 def check_direct_video(url):
     try:
@@ -95,6 +182,42 @@ def download_video():
         return jsonify({'error': 'URL is required'}), 400
 
     video_url = data['url']
+    # Optional hint from the page: 'image' prefers image extraction, otherwise video.
+    media_hint = (data.get('media') or 'video').lower()
+
+    # Fast-path 0: image link or image-preferring page (e.g. Meta AI Image Downloader)
+    if media_hint == 'image' or check_direct_image(video_url):
+        # Resolve the actual image URL.
+        if check_direct_image(video_url):
+            image_url = video_url
+        elif 'meta.ai' in video_url:
+            image_url = extract_meta_share_image(video_url)
+        else:
+            image_url = None
+        # Only succeed if we genuinely found an image.
+        if image_url and check_direct_image(image_url):
+            parsed = urllib.parse.urlparse(image_url)
+            title = os.path.basename(parsed.path).split('?')[0] or 'meta_ai_image'
+            ext = (title.rsplit('.', 1)[-1] if '.' in title else 'jpg').lower()
+            if '.' in title:
+                title = title.rsplit('.', 1)[0]
+            size = get_remote_file_size(image_url)
+            size_str = f" ({round(size / 1024 / 1024, 1)} MB)" if size else ""
+            return jsonify({
+                'success': True,
+                'title': title or 'meta_ai_image',
+                'media_type': 'image',
+                'download_url': image_url,
+                'formats': [{
+                    'format_id': 'original',
+                    'quality': f"Original Image{size_str}",
+                    'resolution': 'Full',
+                    'ext': ext if ext in ['jpg', 'jpeg', 'png', 'webp', 'gif'] else 'jpg',
+                    'url': image_url
+                }]
+            })
+        if media_hint == 'image':
+            return jsonify({'error': 'Failed to extract an image from that link. Make sure it is a public Meta AI image share link.'}), 400
 
     # Fast-path 1: Check if the link is already a direct video file
     if check_direct_video(video_url):
@@ -326,6 +449,101 @@ def instagram_downloader():
 @app.route('/facebook-downloader')
 def facebook_downloader():
     return render_template('facebook.html')
+
+@app.route('/meta-ai-watermark-remover')
+def watermark_remover():
+    return render_template('watermark.html')
+
+@app.route('/meta-ai-image-downloader')
+def image_downloader():
+    return render_template('meta_ai_image.html')
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+@app.route('/how-it-works')
+def how_it_works():
+    return render_template('how_it_works.html')
+
+@app.route('/faq')
+def faq():
+    return render_template('faq.html')
+
+@app.route('/blog')
+def blog():
+    posts = [_post_summary(slug) for slug in POST_ORDER]
+    return render_template('blog.html', posts=posts)
+
+@app.route('/blog/<slug>')
+def blog_post(slug):
+    post = POSTS.get(slug)
+    if not post:
+        abort(404)
+    context = dict(post)
+    context['slug'] = slug
+    context['date_display'] = _format_date(post['date'])
+    context['title_plain'] = unescape(re.sub(r'<[^>]+>', '', post['title']))
+    related = [_post_summary(s) for s in POST_ORDER if s != slug][:3]
+    return render_template('blog_post.html', post=context, related=related)
+
+@app.route('/robots.txt')
+def robots_txt():
+    lines = [
+        'User-agent: *',
+        'Allow: /',
+        'Disallow: /api/',
+        '',
+        f'Sitemap: {request.url_root}sitemap.xml',
+    ]
+    return Response('\n'.join(lines), mimetype='text/plain')
+
+@app.route('/sitemap.xml')
+def sitemap_xml():
+    base = request.url_root.rstrip('/')
+    static_paths = [
+        ('/', '1.0'),
+        ('/meta-ai-watermark-remover', '0.9'),
+        ('/meta-ai-image-downloader', '0.9'),
+        ('/instagram-downloader', '0.8'),
+        ('/facebook-downloader', '0.8'),
+        ('/blog', '0.7'),
+        ('/how-it-works', '0.6'),
+        ('/faq', '0.6'),
+        ('/about', '0.5'),
+        ('/contact', '0.4'),
+        ('/privacy-policy', '0.3'),
+        ('/terms-of-service', '0.3'),
+        ('/disclaimer', '0.3'),
+    ]
+    urls = []
+    for path, priority in static_paths:
+        urls.append(
+            f'  <url><loc>{base}{path}</loc>'
+            f'<changefreq>weekly</changefreq><priority>{priority}</priority></url>'
+        )
+    for slug in POST_ORDER:
+        lastmod = POSTS[slug]['date']
+        urls.append(
+            f'  <url><loc>{base}/blog/{slug}</loc>'
+            f'<lastmod>{lastmod}</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>'
+        )
+    xml = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        + '\n'.join(urls)
+        + '\n</urlset>'
+    )
+    return Response(xml, mimetype='application/xml')
+
+@app.route('/ads.txt')
+def ads_txt():
+    # Populate this with your real AdSense publisher line once approved, e.g.:
+    # google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0
+    if ADSENSE_CLIENT:
+        pub_id = ADSENSE_CLIENT.replace('ca-', '')
+        return Response(f'google.com, {pub_id}, DIRECT, f08c47fec0942fa0\n', mimetype='text/plain')
+    return Response('', mimetype='text/plain')
 
 @app.route('/api/download/file', methods=['GET'])
 def download_file_route():

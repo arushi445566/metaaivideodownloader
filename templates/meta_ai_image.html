@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% set active_page = "image" %}
+{% set input_placeholder = "Paste your Meta AI image link here..." %}
+{% set submit_label = "Download Image" %}
+
+{% block title %}Meta AI Image Downloader – Save Meta AI Images Free in HD{% endblock %}
+{% block description %}Free Meta AI image downloader. Paste a Meta AI image link to save AI-generated images in full quality — fast, online, no signup and no watermark.{% endblock %}
+{% block keywords %}meta ai image downloader, download meta ai image, save meta ai image, meta ai photo downloader, meta ai image download{% endblock %}
+
+{% block structured_data %}
+{{ super() }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Meta AI Image Downloader",
+  "operatingSystem": "Web",
+  "applicationCategory": "MultimediaApplication",
+  "url": "{{ canonical_url }}",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Free online Meta AI image downloader to save AI-generated images in full quality."
+}
+</script>
+{% endblock %}
+
+{% block content %}
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1 class="hero-title">Meta AI Image Downloader <br> <span class="highlight">Save AI Images in Full Quality</span></h1>
+                <p class="hero-subtitle">Paste your Meta AI image link to download AI-generated images in their original quality. 100% free, online, and no signup required.</p>
+
+                {% include "_downloader.html" %}
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="features-section">
+            <h2 class="section-title">Why Use Our Meta AI Image Downloader?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🖼️</div>
+                    <h3>Full Resolution</h3>
+                    <p>Save your AI-generated images at their original size and quality — no compression.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Instant &amp; Free</h3>
+                    <p>No software to install. Paste a link and your image is ready in seconds.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Any Device</h3>
+                    <p>Works on iPhone, Android, Mac, and Windows browsers.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Editorial Content -->
+        <section class="guide-section">
+            <div class="guide-container">
+                <h2 class="guide-section-title">How to Download a Meta AI Image</h2>
+
+                <div class="guide-article">
+                    <h3>Step-by-step: save your AI image</h3>
+                    <p>Saving a Meta AI image takes seconds. Open the image you generated inside Meta AI — on WhatsApp, Instagram, Messenger, or the meta.ai web app — and tap "Share", then "Copy Link". Paste that link into the box at the top of this page and press "Download Image". You will see a preview of your image, and you can save the full-resolution file directly to your device.</p>
+                </div>
+
+                <div class="guide-article">
+                    <h3>Why download your AI images?</h3>
+                    <p>Images you create with Meta AI live inside your chat and can disappear when conversations are cleared or links expire. Downloading them gives you a permanent, full-quality copy you can use in design projects, social posts, presentations, or simply keep as part of your creative portfolio. Because we fetch the source file, you avoid the quality loss that comes from screenshots.</p>
+                </div>
+
+                <div class="guide-article">
+                    <h3>Screenshots vs. real downloads</h3>
+                    <p>A screenshot captures only what fits on your screen, at screen resolution, and often includes interface elements. Downloading the source image instead preserves the full resolution and the original file with no cropping or compression — the difference is obvious when you print or edit the result.</p>
+                </div>
+
+                <div class="guide-article">
+                    <h3>Use your images responsibly</h3>
+                    <p>This tool is for personal, educational, and archival use. Only download images you created yourself or have permission to use, and follow Meta's AI Studio policies when reusing AI-generated content. For more on rights and reuse, read our <a href="/blog/can-you-legally-download-ai-videos" class="legal-link">guide to AI media copyright</a>. Need video instead? Try our <a href="/" class="legal-link">Meta AI video downloader</a>.</p>
+                </div>
+            </div>
+        </section>
+{% endblock %}
+
+{% block scripts %}
+<script>window.DOWNLOADER_MEDIA = 'image';</script>
+{% endblock %}

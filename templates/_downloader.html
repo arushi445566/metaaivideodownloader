@@ -1,0 +1,67 @@
+                <!-- Local File Warning Banner (shown if opened via file://) -->
+                <div id="fileProtocolWarning" class="warning-banner hidden">
+                    <div class="warning-content">
+                        <svg class="warning-icon" width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                        </svg>
+                        <span>
+                            <strong>Running from local file:</strong> The downloader needs the running server to extract videos. Please open
+                            <a href="http://localhost:5002" class="warning-link">http://localhost:5002</a> to use the tool.
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Downloader Form -->
+                <div class="downloader-card pulse-glow">
+                    <form id="downloadForm" class="download-form">
+                        <div class="input-group">
+                            <svg class="input-icon" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+                            </svg>
+                            <input type="url" id="videoUrl" placeholder="{{ input_placeholder | default('Paste Meta AI video link here...') }}" required autocomplete="off">
+                            <button type="button" id="pasteBtn" class="paste-btn">Paste</button>
+                        </div>
+                        <button type="submit" id="submitBtn" class="submit-btn gradient-shift">
+                            <span>{{ submit_label | default('Download Video') }}</span>
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                            </svg>
+                        </button>
+                    </form>
+
+                    <!-- Status Display -->
+                    <div id="statusContainer" class="status-container hidden">
+                        <div class="loader-circle animate-spin hidden" id="loaderIcon"></div>
+                        <p id="statusMessage" class="status-message">Processing your video...</p>
+
+                        <div class="progress-wrapper hidden" id="progressWrapper">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+
+                        <!-- Media Preview -->
+                        <div id="previewWrapper" class="preview-wrapper hidden animate-slideDown">
+                            <video id="videoPreview" class="video-preview" controls playsinline>
+                                Your browser does not support the video tag.
+                            </video>
+                            <img id="imagePreview" class="image-preview hidden" alt="Downloaded media preview">
+                        </div>
+
+                        <!-- Quality Options Selection -->
+                        <div id="qualityOptionsContainer" class="quality-options-container hidden animate-slideDown">
+                            <label class="options-label">Select Download Option:</label>
+                            <div id="formatsList" class="formats-list">
+                                <!-- Dynamic buttons will be injected here -->
+                            </div>
+                        </div>
+
+                        <!-- Download Result actions -->
+                        <div id="resultActions" class="result-actions hidden animate-slideDown">
+                            <button id="downloadFileBtn" class="download-file-btn hidden">
+                                Download MP4
+                            </button>
+                            <button id="downloadAnotherBtn" class="secondary-btn">
+                                Download Another Video
+                            </button>
+                        </div>
+                    </div>
+                </div>

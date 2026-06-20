@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}{{ site_name }} – Download Meta AI Videos{% endblock %}</title>
+    <meta name="description" content="{% block description %}Free Meta AI video downloader. Paste a link to save AI-generated videos as HD MP4 with audio.{% endblock %}">
+    <meta name="robots" content="{% block robots %}index, follow, max-image-preview:large{% endblock %}">
+    <meta name="keywords" content="{% block keywords %}meta ai video downloader, meta ai downloader, meta ai watermark remover, download meta ai video{% endblock %}">
+    <meta name="author" content="{{ site_name }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    <meta property="og:site_name" content="{{ site_name }}">
+    <meta property="og:title" content="{% block og_title %}{{ self.title() }}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}{{ self.description() }}{% endblock %}">
+    <meta property="og:url" content="{{ canonical_url }}">
+    <meta property="og:image" content="{{ url_for('static', filename='og-image.svg', _external=True) }}">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ self.title() }}">
+    <meta name="twitter:description" content="{{ self.description() }}">
+    <meta name="twitter:image" content="{{ url_for('static', filename='og-image.svg', _external=True) }}">
+
+    <!-- Favicon -->
+    <link rel="icon" href="{{ url_for('static', filename='favicon.svg') }}" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='favicon.svg') }}">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <!-- Structured Data -->
+    {% block structured_data %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "{{ site_name }}",
+      "url": "{{ site_url }}/",
+      "description": "Free Meta AI video downloader and watermark remover.",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "{{ site_url }}/blog?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    {% endblock %}
+
+    {% if adsense_client %}
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ adsense_client }}" crossorigin="anonymous"></script>
+    <meta name="google-adsense-account" content="{{ adsense_client }}">
+    {% endif %}
+
+    {% block head_extra %}{% endblock %}
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-brand">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="brand-icon">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                </svg>
+                <span class="brand-name">{{ site_name }}</span>
+            </a>
+            <div class="nav-links">
+                <a href="/" class="nav-link {{ 'active' if active_page == 'home' }}">Meta AI Video</a>
+                <a href="/meta-ai-image-downloader" class="nav-link {{ 'active' if active_page == 'image' }}">Meta AI Image</a>
+                <a href="/meta-ai-watermark-remover" class="nav-link {{ 'active' if active_page == 'watermark' }}">Watermark Remover</a>
+                <a href="/instagram-downloader" class="nav-link {{ 'active' if active_page == 'instagram' }}">Instagram</a>
+                <a href="/facebook-downloader" class="nav-link {{ 'active' if active_page == 'facebook' }}">Facebook</a>
+                <a href="/blog" class="nav-link {{ 'active' if active_page == 'blog' }}">Blog</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="/">Meta AI Video Downloader</a>
+            <a href="/meta-ai-image-downloader">Meta AI Image Downloader</a>
+            <a href="/meta-ai-watermark-remover">Watermark Remover</a>
+            <a href="/about">About</a>
+            <a href="/how-it-works">How It Works</a>
+            <a href="/faq">FAQ</a>
+            <a href="/blog">Blog</a>
+            <a href="/privacy-policy">Privacy Policy</a>
+            <a href="/terms-of-service">Terms of Service</a>
+            <a href="/disclaimer">Disclaimer</a>
+            <a href="/contact">Contact Us</a>
+        </div>
+        <p>&copy; {{ current_year }} {{ site_name }}. All rights reserved.</p>
+        <p class="disclaimer">{{ site_name }} is an independent tool and is not affiliated with, endorsed by, or sponsored by Meta Platforms, Inc. For personal use only — please respect copyright laws.</p>
+    </footer>
+
+    <!-- GDPR/CCPA Cookie Consent Banner -->
+    <div id="cookieConsent" class="cookie-consent hidden">
+        <div class="cookie-content">
+            <p>We use cookies to personalize content, analyze traffic, and serve advertisements. By clicking "Accept All", you agree to our use of cookies in accordance with our <a href="/privacy-policy" class="cookie-link">Privacy Policy</a>.</p>
+            <div class="cookie-buttons">
+                <button id="acceptCookiesBtn" class="cookie-btn-primary">Accept All</button>
+                <button id="declineCookiesBtn" class="cookie-btn-secondary">Decline</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

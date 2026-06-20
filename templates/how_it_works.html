@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}How It Works – Download Meta AI Videos in 3 Steps | {{ site_name }}{% endblock %}
+{% block description %}Learn how {{ site_name }} downloads Meta AI videos and removes watermarks: copy your link, paste it, and save a clean HD MP4. A simple step-by-step explanation.{% endblock %}
+{% block robots %}index, follow{% endblock %}
+
+{% block structured_data %}
+{{ super() }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to download a Meta AI video",
+  "step": [
+    { "@type": "HowToStep", "name": "Copy the video link", "text": "In Meta AI, tap Share then Copy Link on your video." },
+    { "@type": "HowToStep", "name": "Paste the link", "text": "Paste the link into the downloader and press Download Video." },
+    { "@type": "HowToStep", "name": "Choose quality and save", "text": "Preview the video, choose a quality, and save the MP4." }
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+        <section class="legal-section animate-fadeIn">
+            <div class="legal-card">
+                <h1 class="legal-title">How {{ site_name }} Works</h1>
+                <p class="legal-updated">A simple, transparent look under the hood</p>
+
+                <p>{{ site_name }} turns a shared video link into a downloadable HD MP4 in seconds. You do not need any technical knowledge — if you can copy and paste a link, you can use it. Here is exactly what happens at each step.</p>
+
+                <h2>Step 1 — Copy your video link</h2>
+                <p>Open the video you want to save inside Meta AI, Instagram, or Facebook. Tap the <strong>Share</strong> icon, then choose <strong>Copy Link</strong>. This copies a public share URL that points to your video. For Meta AI videos, you can copy the link directly from the chat where the clip was generated.</p>
+
+                <h2>Step 2 — Paste it into the downloader</h2>
+                <p>Return to {{ site_name }} and paste the link into the input box on the <a href="/" class="legal-link">home page</a> (or the <a href="/meta-ai-watermark-remover" class="legal-link">watermark remover</a>). You can use the "Paste" button to insert it from your clipboard automatically. Then press the download button.</p>
+
+                <h2>Step 3 — We fetch the source file</h2>
+                <p>Our server reads the public link you provided and locates the underlying media stream on the platform's content delivery network. For higher-resolution videos where the platform stores video and audio separately, our backend downloads the best video track and the best audio track and merges them into a single MP4 using FFmpeg — so you never lose sound.</p>
+
+                <h2>Step 4 — Preview, choose quality, and save</h2>
+                <p>You will see a live preview of the video along with the available quality options, such as 720p or 1080p. Pick the one you want, and the clean MP4 downloads straight to your device. That is it — no watermark, no signup, no cost.</p>
+
+                <h2>What we do not do</h2>
+                <ul>
+                    <li>We never ask for your Meta, Instagram, or Facebook password.</li>
+                    <li>We do not store your videos — files are processed live and discarded.</li>
+                    <li>We do not host copyrighted content; we only retrieve the source file your link points to.</li>
+                </ul>
+
+                <p>Ready to try it? Head to the <a href="/" class="legal-link">Meta AI video downloader</a> and paste your first link. If you run into any issues, our <a href="/faq" class="legal-link">FAQ</a> and <a href="/contact" class="legal-link">contact page</a> are here to help.</p>
+            </div>
+        </section>
+{% endblock %}

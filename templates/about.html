@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}About {{ site_name }} – Free Meta AI Video Downloader{% endblock %}
+{% block description %}Learn about {{ site_name }}, the free online tool for downloading Meta AI videos and removing watermarks. Our mission, how we work, and our commitment to privacy.{% endblock %}
+{% block robots %}index, follow{% endblock %}
+
+{% block content %}
+        <section class="legal-section animate-fadeIn">
+            <div class="legal-card">
+                <h1 class="legal-title">About {{ site_name }}</h1>
+                <p class="legal-updated">Helping you keep your AI creations since 2024</p>
+
+                <p>{{ site_name }} is a free, browser-based tool that helps people download and archive videos created with Meta AI, along with Reels and videos from Instagram and Facebook. We started with a simple frustration: AI-generated videos are easy to make but surprisingly hard to keep. Chats get cleared, links expire, and a clip you loved can vanish before you ever save it. We built {{ site_name }} so that saving a clean, high-definition copy of your own creation takes one paste and one click.</p>
+
+                <h2>Our Mission</h2>
+                <p>Our mission is to make personal media archival effortless and accessible to everyone, on any device, without cost or technical know-how. We believe the videos you generate are yours to keep, edit, and revisit. No installs, no accounts, and no paywalls stand between you and your own work.</p>
+
+                <h2>What We Offer</h2>
+                <ul>
+                    <li><strong>Meta AI Video Downloader</strong> — save AI-generated videos as clean HD MP4 files.</li>
+                    <li><strong>Meta AI Watermark Remover</strong> — retrieve the cleanest available copy of your own creations.</li>
+                    <li><strong>Instagram &amp; Facebook downloaders</strong> — save Reels and videos in up to 1080p.</li>
+                    <li><strong>Educational blog</strong> — guides on AI video, copyright, formats, and safe downloading.</li>
+                </ul>
+
+                <h2>How We Protect Your Privacy</h2>
+                <p>{{ site_name }} does not require an account and never asks for your Meta, Instagram, or Facebook password. We do not store the videos you download — each request is processed in real time and discarded immediately afterward. We use cookies only for essential site functionality and advertising as described in our <a href="/privacy-policy" class="legal-link">Privacy Policy</a>.</p>
+
+                <h2>Our Commitment to Responsible Use</h2>
+                <p>{{ site_name }} is built for personal, educational, and archival use. We are an independent service and are not affiliated with Meta Platforms, Inc. We encourage every user to respect creators' rights and to download only content they own or have permission to save. You can read more in our <a href="/terms-of-service" class="legal-link">Terms of Service</a> and <a href="/disclaimer" class="legal-link">Disclaimer</a>.</p>
+
+                <h2>Get in Touch</h2>
+                <p>Questions, feedback, or partnership ideas? We would love to hear from you. Reach our team any time through the <a href="/contact" class="legal-link">contact page</a> — we typically reply within 24 hours.</p>
+            </div>
+        </section>
+{% endblock %}

@@ -4,6 +4,12 @@
 const BACKEND_URL = '';
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Show a warning if the page is opened directly from the filesystem (file://)
+    if (window.location.protocol === 'file:') {
+        const fileWarning = document.getElementById('fileProtocolWarning');
+        if (fileWarning) fileWarning.classList.remove('hidden');
+    }
+
     // Homepage Elements
     const downloadForm = document.getElementById('downloadForm');
     const videoUrlInput = document.getElementById('videoUrl');
@@ -20,7 +26,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Video Preview & Quality Options Elements
     const previewWrapper = document.getElementById('previewWrapper');
     const videoPreview = document.getElementById('videoPreview');
+    const imagePreview = document.getElementById('imagePreview');
     const qualityOptionsContainer = document.getElementById('qualityOptionsContainer');
+
+    // Optional per-page media hint ('image' on the Meta AI Image Downloader page)
+    const MEDIA_HINT = window.DOWNLOADER_MEDIA || 'video';
     const formatsList = document.getElementById('formatsList');
     
     // Action buttons
@@ -71,6 +81,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (videoPreview) {
                 videoPreview.pause();
                 videoPreview.src = '';
+                videoPreview.classList.remove('hidden');
+            }
+            if (imagePreview) {
+                imagePreview.src = '';
+                imagePreview.classList.add('hidden');
             }
             if (qualityOptionsContainer) qualityOptionsContainer.classList.add('hidden');
             if (formatsList) formatsList.innerHTML = '';
@@ -112,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ url: url })
+                body: JSON.stringify({ url: url, media: MEDIA_HINT })
             });
 
             const data = await response.json();
@@ -120,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.success && data.download_url) {
                 // Hide loader, show success
                 if (loaderIcon) loaderIcon.classList.add('hidden');
-                showSuccessState(data.formats, data.title, data.download_url);
+                showSuccessState(data.formats, data.title, data.download_url, data.media_type);
             } else {
                 throw new Error(data.error || 'Failed to extract video.');
             }
@@ -137,23 +152,36 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function showSuccessState(formats, title, defaultDownloadUrl) {
+    function showSuccessState(formats, title, defaultDownloadUrl, mediaType) {
+        const isImage = mediaType === 'image';
         if (statusMessage) {
-            statusMessage.textContent = 'Video successfully extracted! Preview ready.';
+            statusMessage.textContent = isImage
+                ? 'Image successfully extracted! Preview ready.'
+                : 'Video successfully extracted! Preview ready.';
             statusMessage.style.color = 'var(--success)';
         }
         if (progressWrapper) progressWrapper.classList.add('hidden');
-        
-        // Setup Video Preview
-        if (defaultDownloadUrl && videoPreview && previewWrapper) {
+
+        // Setup Preview (image or video)
+        if (defaultDownloadUrl && previewWrapper) {
             let previewUrl = defaultDownloadUrl;
             if (previewUrl.startsWith('/')) {
                 previewUrl = `${BACKEND_URL}${previewUrl}`;
             }
-            videoPreview.src = previewUrl;
+            if (isImage) {
+                if (videoPreview) { videoPreview.pause(); videoPreview.classList.add('hidden'); videoPreview.src = ''; }
+                if (imagePreview) {
+                    imagePreview.src = previewUrl;
+                    imagePreview.classList.remove('hidden');
+                }
+            } else if (videoPreview) {
+                if (imagePreview) { imagePreview.classList.add('hidden'); imagePreview.src = ''; }
+                videoPreview.classList.remove('hidden');
+                videoPreview.src = previewUrl;
+                videoPreview.muted = true;
+                videoPreview.play().catch(e => console.log('Autoplay muted blocked:', e));
+            }
             previewWrapper.classList.remove('hidden');
-            videoPreview.muted = true;
-            videoPreview.play().catch(e => console.log('Autoplay muted blocked:', e));
         }
 
         // Render Dynamic Quality Option Buttons

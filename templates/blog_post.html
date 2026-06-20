@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% set active_page = "blog" %}
+
+{% block title %}{{ post.title | safe }} | {{ site_name }}{% endblock %}
+{% block description %}{{ post.description }}{% endblock %}
+{% block keywords %}{{ post.keywords }}{% endblock %}
+{% block og_type %}article{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "{{ post.title_plain }}",
+  "description": "{{ post.description }}",
+  "datePublished": "{{ post.date }}",
+  "dateModified": "{{ post.date }}",
+  "author": { "@type": "Organization", "name": "{{ site_name }}" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "{{ site_name }}",
+    "logo": { "@type": "ImageObject", "url": "{{ url_for('static', filename='favicon.svg', _external=True) }}" }
+  },
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "{{ canonical_url }}" }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "{{ site_url }}/" },
+    { "@type": "ListItem", "position": 2, "name": "Blog", "item": "{{ site_url }}/blog" },
+    { "@type": "ListItem", "position": 3, "name": "{{ post.title_plain }}", "item": "{{ canonical_url }}" }
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+        <article class="legal-section animate-fadeIn">
+            <div class="legal-card article-card">
+                <nav class="breadcrumb"><a href="/">Home</a> / <a href="/blog">Blog</a> / <span>{{ post.category }}</span></nav>
+                <h1 class="legal-title">{{ post.title | safe }}</h1>
+                <p class="legal-updated">{{ post.date_display }} • {{ post.read_time }} • {{ post.category }}</p>
+
+                <div class="article-body">
+                    {{ post.body | safe }}
+                </div>
+
+                <div class="article-cta">
+                    <h3>Ready to save your Meta AI videos?</h3>
+                    <p>Download clean HD MP4s with no watermark in a couple of clicks.</p>
+                    <a href="/" class="submit-btn gradient-shift article-cta-btn">Open the Meta AI Downloader</a>
+                </div>
+            </div>
+        </article>
+
+        {% if related %}
+        <section class="blog-list-section">
+            <div class="guide-container">
+                <h2 class="section-title" style="font-size:1.75rem;margin-bottom:2rem;">Keep Reading</h2>
+                <div class="blog-grid">
+                    {% for r in related %}
+                    <a href="/blog/{{ r.slug }}" class="blog-card">
+                        <span class="blog-card-category">{{ r.category }}</span>
+                        <h3 class="blog-card-title">{{ r.title | safe }}</h3>
+                        <div class="blog-card-meta"><span>{{ r.read_time }}</span></div>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+{% endblock %}
