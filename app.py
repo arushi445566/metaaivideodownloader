@@ -19,6 +19,15 @@ SITE_NAME = os.environ.get('SITE_NAME', 'MetaVidSaver')
 # Set ADSENSE_CLIENT (e.g. "ca-pub-1234567890123456") to enable the Google AdSense loader.
 ADSENSE_CLIENT = os.environ.get('ADSENSE_CLIENT', '')
 
+# Optional outbound proxy (e.g. a residential proxy) to bypass datacenter-IP blocks
+# on Instagram/Facebook/Meta when deployed on a cloud host.
+# Format: "http://user:pass@host:port" or "http://host:port".
+PROXY = os.environ.get('PROXY', '').strip()
+if PROXY:
+    # Make urllib (Meta AI extractor, direct-link checks) and yt-dlp route through the proxy.
+    for _k in ('HTTP_PROXY', 'HTTPS_PROXY', 'http_proxy', 'https_proxy'):
+        os.environ[_k] = PROXY
+
 
 @app.context_processor
 def inject_globals():
@@ -273,6 +282,8 @@ def download_video():
         'no_warnings': True,
         'extract_flat': False,
     }
+    if PROXY:
+        ydl_opts['proxy'] = PROXY
 
     # Auto-load cookies.txt if it exists in the app directory, or write it from env var if present
     cookies_content = os.environ.get('COOKIES_CONTENT')
@@ -566,6 +577,8 @@ def download_file_route():
         'no_warnings': True,
         'merge_output_format': 'mp4',
     }
+    if PROXY:
+        ydl_opts['proxy'] = PROXY
 
     # Use local homebrew path on macOS if present, otherwise let yt-dlp search system PATH
     if os.path.exists('/opt/homebrew/bin/ffmpeg'):
