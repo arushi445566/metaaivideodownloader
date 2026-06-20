@@ -1,3 +1,8 @@
+// If hosting the frontend on Hostinger and backend on Render, set this to your Render URL:
+// const BACKEND_URL = 'https://meta-ai-video-downloader-backend.onrender.com';
+// If hosting everything on Render, keep it empty:
+const BACKEND_URL = '';
+
 document.addEventListener('DOMContentLoaded', () => {
     // Homepage Elements
     const downloadForm = document.getElementById('downloadForm');
@@ -102,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const response = await fetch('/api/download', {
+            const response = await fetch(`${BACKEND_URL}/api/download`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -141,7 +146,11 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Setup Video Preview
         if (defaultDownloadUrl && videoPreview && previewWrapper) {
-            videoPreview.src = defaultDownloadUrl;
+            let previewUrl = defaultDownloadUrl;
+            if (previewUrl.startsWith('/')) {
+                previewUrl = `${BACKEND_URL}${previewUrl}`;
+            }
+            videoPreview.src = previewUrl;
             previewWrapper.classList.remove('hidden');
             videoPreview.muted = true;
             videoPreview.play().catch(e => console.log('Autoplay muted blocked:', e));
@@ -167,6 +176,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     `;
                     
                     btn.addEventListener('click', () => {
+                        let downloadUrl = fmt.url;
+                        if (downloadUrl.startsWith('/api/download/file')) {
+                            downloadUrl = `${BACKEND_URL}${downloadUrl}`;
+                        }
                         if (fmt.url.includes('/api/download/file')) {
                             if (statusMessage && loaderIcon) {
                                 statusMessage.textContent = 'Downloading and compiling highest quality streams on the server... (this may take a few seconds)';
@@ -180,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 }, 8000);
                             }
                         }
-                        triggerDownload(fmt.url, `${title}_${fmt.resolution}.${fmt.ext}`);
+                        triggerDownload(downloadUrl, `${title}_${fmt.resolution}.${fmt.ext}`);
                     });
                     
                     formatsList.appendChild(btn);
