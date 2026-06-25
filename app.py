@@ -5,7 +5,7 @@ import urllib.parse
 import re
 from datetime import datetime
 from html import unescape
-from flask import Flask, request, jsonify, render_template, send_file, Response, abort
+from flask import Flask, request, jsonify, render_template, send_file, Response, abort, redirect
 from flask_cors import CORS
 import yt_dlp
 
@@ -38,6 +38,7 @@ def inject_globals():
         'current_year': datetime.utcnow().year,
         'canonical_url': request.base_url,
         'site_url': request.url_root.rstrip('/'),
+        'is_local': request.host.split(':')[0] in ('localhost', '127.0.0.1'),
     }
 
 
@@ -453,13 +454,13 @@ def disclaimer():
 def contact():
     return render_template('contact.html')
 
+# Legacy Instagram/Facebook downloader pages were removed to focus the site on
+# Meta AI. Permanently redirect any already-indexed URLs to the homepage so they
+# pass link equity instead of returning 404s. (Templates archived in /archive.)
 @app.route('/instagram-downloader')
-def instagram_downloader():
-    return render_template('instagram.html')
-
 @app.route('/facebook-downloader')
-def facebook_downloader():
-    return render_template('facebook.html')
+def legacy_social_downloader():
+    return redirect('/', code=301)
 
 @app.route('/meta-ai-watermark-remover')
 def watermark_remover():
@@ -516,8 +517,6 @@ def sitemap_xml():
         ('/', '1.0'),
         ('/meta-ai-watermark-remover', '0.9'),
         ('/meta-ai-image-downloader', '0.9'),
-        ('/instagram-downloader', '0.8'),
-        ('/facebook-downloader', '0.8'),
         ('/blog', '0.7'),
         ('/how-it-works', '0.6'),
         ('/faq', '0.6'),
